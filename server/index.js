@@ -24,8 +24,11 @@ loadSocketServer(ssl).then(server => {
         host && host.send(JSON.stringify(updateRoom(roomID)))
     }
 
-    server.static(process.cwd() + '/web/index.html')
+    // server.get('/images',  (req, res) => res.send(JSON.stringify(fs.readdirSync(process.cwd() + '/web/images'))))
 
+    server.parcel(process.cwd() + '/web/index.html')
+    //server.static(process.cwd() + '/web')
+   
     // API here
     // server.get('/checkRoom/:roomID', (req, res) => res.send(updateRoom(req.params.roomID)))
     // server.get('/:roomID/:name', (req, res) => res.send(process.cwd() + '/dist/index.html'))

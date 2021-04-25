@@ -1,12 +1,13 @@
 {
-	"name": "magic_stream",
+	"name": "gallery",
 	"version": "1.0.0",
-	"description": "Magic Stream Server, Web & App",
+	"description": "Gallery App",
 	"scripts": {
 		"start": "node server",
 		"test": "nodemon --ignore dist --ignore .cache server"
 	},
 	"dependencies": {
+		"better-sqlite3": "^7.1.5",
 		"fastify": "^3.9.1",
 		"fastify-https-redirect": "^1.0.3",
 		"fastify-websocket": "^2.0.11",
@@ -17,6 +18,6 @@
 		"jsx-dom": "^7.0.0-beta.2",
 		"sass": "^1.30.0"
 	},
-	"author": "Marin Bivol",
+	"author": "Duhlicher Petru",
 	"license": "ISC"
 }
