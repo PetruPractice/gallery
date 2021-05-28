@@ -41,3 +41,5 @@ npm start
 - [ ] share button to get a protected link 
 - [ ] sort tags , sort by date, by location, by metadata
 - [ ] thumbnailing
+
+![gallery system diagram](/gallery.png)
