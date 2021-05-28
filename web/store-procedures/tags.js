@@ -1,6 +1,4 @@
 module.exports = (state, emitter) => {
-    state.tags = []
-
     emitter.on('createTag', e => {
         e.preventDefault()
     
@@ -11,16 +9,26 @@ module.exports = (state, emitter) => {
         const color = form.get('tagColor').replace('#', '')
         const desc = form.get('tagDesc')
         fetch('/api/tag/create/' + [name, color, desc].join('/')).then(res => res.json()).then(res => {
-            console.log(res)
+            console.log('tag create res', res)
             emitter.emit('listTags')
         })
 
     })
-    emitter.on('listTags', () => {
-        fetch('/api/tag/list').then(res => res.json()).then(tags => {
-            state.tags = tags
-            emitter.emit('render')
+    emitter.on('addTag', (imageId, tagId) => {
+        fetch('/api/tag/link/' + tagId + '/' + imageId).then(res => res.json()).then(res => {
+            emitter.emit('tags:forImage', imageId)
         })
     })
-    emitter.emit('listTags')
+    
+    fetch('/api/tag/list').then(res => res.json()).then(tags => {
+        state.page.tags = tags
+        emitter.emit('render')
+    })
+
+    emitter.on('applyTagToWholeAlbum', (e, tagId, albumId) => {
+        const tr = e.target.parentElement.parentElement
+        const popup = tr.parentElement.parentElement
+        tr.remove()
+    })
+
 }

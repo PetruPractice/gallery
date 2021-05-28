@@ -1,0 +1,228 @@
+#uploadImages {
+    font-size: 1.25rem;
+    /* 20 */
+    background-color: #c8dadf;
+    position: relative;
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+#uploadImages>form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+#uploadImages>form>input[type="file"] {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    opacity: 0;
+}
+
+#uploadImages>form>button {
+    font-weight: 700;
+    color: #e5edf1;
+    background-color: #39bfd3;
+    padding: 8px 16px;
+    margin: 40px auto 0;
+    margin-top: 20px;
+    position: absolute;
+    bottom: 15px;
+}
+
+#uploadImages>form>button:hover,
+#uploadImages>form>button:focus {
+    background-color: #0f3c4b;
+}
+
+.uploadImagesOver {
+    outline-offset: -20px;
+    outline-color: #0f3c4b;
+    background-color: #345678;
+}
+
+.uploadStrongHover {
+    color: #39bfd3
+}
+
+.box.is-uploading .box__uploading,
+.box.is-success .box__success,
+.box.is-error .box__error {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    -webkit-transform: translateY( -50%);
+    transform: translateY( -50%);
+}
+
+.box__uploading {
+    font-style: italic;
+}
+
+.box__success {
+    -webkit-animation: appear-from-inside .25s ease-in-out;
+    animation: appear-from-inside .25s ease-in-out;
+}
+
+.overlay {
+    background-color: #0f3c4b;
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -2;
+    cursor: pointer;
+}
+
+
+@-webkit-keyframes appear-from-inside {
+    from {
+        -webkit-transform: translateY( -50%) scale( 0);
+    }
+    75% {
+        -webkit-transform: translateY( -50%) scale( 1.1);
+    }
+    to {
+        -webkit-transform: translateY( -50%) scale( 1);
+    }
+}
+
+@keyframes appear-from-inside {
+    from {
+        transform: translateY( -50%) scale( 0);
+    }
+    75% {
+        transform: translateY( -50%) scale( 1.1);
+    }
+    to {
+        transform: translateY( -50%) scale( 1);
+    }
+}
+
+.albums {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+.album {
+    display: inline-block;
+    position: relative;
+    width: 40%;
+    height: 40%;
+    border: 1px solid red;  
+    background:rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    overflow-y: scroll;
+    padding: 0;
+    margin: 32px
+}
+.album img {
+    border-radius: 12px;
+    margin: 3px;
+    width: 30%;
+    height: 30%;
+}
+.album span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    
+}
+.album .tagToAlbum {
+    margin: 0;
+    padding: 0;
+    border: none;
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    font-size: 15px;
+    background-color: #92b0b3;
+}
+.album .moveAlbum {
+    margin: 0;
+    padding: 0;
+    border: none;
+    position: absolute;
+    top: 20px;
+    left: -3px;
+    font-size: 25px;
+    background: none;
+}
+.album .moveAlbum::after {
+    display: none;
+}
+
+.album > .imagesPreview {
+    position: absolute;
+    top: 32px;
+}
+
+#popups > div {
+    position: fixed;
+    left: 0;
+    border-radius: 3px;
+    z-index: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+}
+
+#popups > div > table {
+    text-align: center;
+    border:rgba(255, 0, 0, 0.3);
+    background:rgba(100, 0, 0, 0.9);
+    width: 80vw;
+    height: 60vh;
+    color: white;
+}
+
+.album-depth-0 {
+    width: 100%;
+    height: 100%;
+}
+.album-depth-0 .back {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    border: none;
+    font-size: 25px;
+    background-color: wheat;   
+}
+
+.close-image {
+    top:0;
+    right: 0;
+    position: absolute;
+    color: red;
+    background: black;
+    font-size: 26px;
+    border-radius: 32%
+}
