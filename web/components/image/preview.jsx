@@ -6,7 +6,7 @@ module.exports = (state, emit) => {
 		{state.page.tags.map(tag => <option value={tag._id} style={'color:' + tag.color}>{tag.name}</option>)}
 	</select>
 	return <View>
-		<img src={'/api/images/' + img.filename} />
+		<img src={'/api/images/' + img.filename} style="width: auto; height: 80vh;" />
 		<button class="close-image" onclick={e => emit('imageClose', e)}>x</button><br />
 		{TagsList(state, emit, img._id)}
 		<br />

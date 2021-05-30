@@ -4,6 +4,7 @@ const TagSort = require('../components/tag/sort')
 const ImageList = require('../components/image/list')
 const CreateAlbum = require('../components/album/create')
 const MoveAlbum = require('../components/album/move')
+const MoveImage = require('../components/image/move')
 const ImagePreview = require('../components/image/preview')
 
 const TagsSelector = ({ state, emit, albumId }) => <div>
@@ -24,11 +25,16 @@ const Album = ({state, emit, album, depth}) => {
     return <div class={'album album-depth-' + depth} albumId={album._id}>
         {backButton}
         <div class="imagesPreview">
-            {album.images && album.images.map(img => <img src={'/api/images/' + img.filename} onclick={e => emit('imageZoom', img._id)} />)}
+            {album.images && album.images.map(img => <div>
+                <img src={'/api/images/' + img.filename} onclick={e => emit('imageZoom', img._id)}/>
+                <button onclick={e => emit('openPopup', <MoveImage state={state} emit={emit} imageId={img._id} />)}>🏞️</button>
+            </div>)}
+
         </div>
         <span>{album.title}</span>
         <button class="tagToAlbum" onclick={e => emit('openPopup', <TagsSelector state={state} emit={emit} albumId={album._id} />)}>➕</button>
         <button class="moveAlbum" onclick={e => emit('openPopup', <MoveAlbum state={state} emit={emit} albumId={album._id} />)}>➡️</button>
+        
     </div>
 }
 

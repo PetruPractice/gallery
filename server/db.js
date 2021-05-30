@@ -32,7 +32,7 @@ const addFolderAlbum = folder => {
 const linkTag = o => run('INSERT INTO images2tags(imageID, tagID) VALUES(@imageId, @tagId)', o)
 const tagsOfImage = imageId => query('SELECT tags._id as _id, tags.name as name, tags.color as color, tags.desc as desc FROM images2tags INNER JOIN tags ON images2tags.tagID=tags._id WHERE images2tags.imageID=?', imageId)
     // pentru test console.log(createTag({ name: 'sky', color: '#343269', desc: 'beauty' }))
-
+const changeImageAlbum = params => run('UPDATE images SET gallery_id=@albumID WHERE _id=@imageId', params)
 
 run('INSERT OR IGNORE INTO album(_id, title, desc) VALUES(0, @title, @desc)', { title: 'camera roll', desc: 'default album' })
     //safe db close
@@ -42,5 +42,5 @@ process.on('SIGINT', () => process.exit(128 + 2))
 process.on('SIGTERM', () => process.exit(128 + 15))
 module.exports = { 
     createTag, listTags, createAlbum, getImagesFromAlbum, getAlbumsFromFolder,
-    getFolders, getAllAlbums, addImage, addFolderAlbum, linkTag, tagsOfImage
+    getFolders, getAllAlbums, addImage, addFolderAlbum, linkTag, tagsOfImage, changeImageAlbum
 }

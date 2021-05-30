@@ -1,6 +1,5 @@
-
 const $ = id => document.getElementById(id)
-
+const getJSON = (...params) => fetch(...params).then(res => res.json())
 module.exports = (state, emitter) => {
     state.page = {
         upload: {
@@ -55,10 +54,10 @@ module.exports = (state, emitter) => {
             e.stopPropagation()
             button.setAttribute('disabled', 'disabled')
             button.innerText = 'Uploading ...'
-            fetch('/api/upload', { 
+            getJSON('/api/upload', { 
                 body: new FormData(form),
                 method: 'post'
-            }).then(res => res.json()).then(res => {
+            }).then(res => {
                 button.innerText = 'Upload'
                 button.removeAttribute('disabled')
                 strong.innerText = 'Choose a file'
@@ -83,7 +82,7 @@ module.exports = (state, emitter) => {
 
         button.setAttribute('disabled', 'disabled')
         button.innerText = 'Creating new album ...'
-        fetch('/api/album/new/' + albumName.value + '/' + albumDesc.value).then(res => res.json()).then(res => {
+        getJSON('/api/album/new/' + albumName.value + '/' + albumDesc.value).then(res => {
             button.innerText = 'Created album'
             button.style.border = '2px solid limegreen'
             albumName.value = ''
@@ -107,11 +106,17 @@ module.exports = (state, emitter) => {
 
     emitter.on('chooseAlbum', (albumId, parentAlbumId) => {
         // TODO: Do the actual move in DB, refresh album list in main page
-        fetch('/api/folder/new/' + parentAlbumId + '/' + albumId).then(res => res.json()).then(res => {
+        getJSON('/api/folder/new/' + parentAlbumId + '/' + albumId).then(res => {
             $('popups').firstChild.remove()
             emitter.emit('getAll')
             // what do do when new album added to the folder ...
         })
+    })
+    emitter.on('chooseAlbumForImage', (imageId, albumID) => {
+        getJSON('/api/image/move/' + imageId + '/' + albumID).then(res => {
+            $('popups').firstChild.remove()
+        })
+  
     })
 
 
@@ -162,14 +167,14 @@ module.exports = (state, emitter) => {
     }
 
     emitter.on('getAll', () => {
-        fetch('/api/album/folders').then(res => res.json()).then(folders => {
-            fetch('/api/album/list').then(res => res.json()).then(albums => {
+        getJSON('/api/album/folders').then(folders => {
+            getJSON('/api/album/list').then(albums => {
                 albums = albums.map(album => {
                     album.images = []
                     return album
                 })
                 Promise.all(albums.map(album => 
-                    fetch('/api/album/images/' + album._id).then(res => res.json()).then(albumImages => {
+                    getJSON('/api/album/images/' + album._id).then(albumImages => {
                         album.images = albumImages
                         // console.log('albumId', album._id, 'images', albumImages)
                     })
@@ -195,7 +200,7 @@ module.exports = (state, emitter) => {
     })
 
     emitter.on('tags:forImage', imageId => {
-        fetch('/api/tags/' + imageId).then(res => res.json()).then(tags => {
+        getJSON('/api/tags/' + imageId).then(tags => {
             state.page.images2tags[imageId] = tags
             emitter.emit('render')
         })
