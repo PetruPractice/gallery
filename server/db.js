@@ -34,6 +34,9 @@ const tagsOfImage = imageId => query('SELECT tags._id as _id, tags.name as name,
     // pentru test console.log(createTag({ name: 'sky', color: '#343269', desc: 'beauty' }))
 const changeImageAlbum = params => run('UPDATE images SET gallery_id=@albumID WHERE _id=@imageId', params)
 
+const removeAlbum = albumId => run('DELETE FROM album where _id=?', albumId)
+
+
 run('INSERT OR IGNORE INTO album(_id, title, desc) VALUES(0, @title, @desc)', { title: 'camera roll', desc: 'default album' })
     //safe db close
 process.on('exit', () => db.close())
@@ -41,6 +44,6 @@ process.on('SIGHUP', () => process.exit(128 + 1))
 process.on('SIGINT', () => process.exit(128 + 2))
 process.on('SIGTERM', () => process.exit(128 + 15))
 module.exports = { 
-    createTag, listTags, createAlbum, getImagesFromAlbum, getAlbumsFromFolder,
+    createTag, listTags, createAlbum, getImagesFromAlbum, getAlbumsFromFolder, removeAlbum,
     getFolders, getAllAlbums, addImage, addFolderAlbum, linkTag, tagsOfImage, changeImageAlbum
 }

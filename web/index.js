@@ -5,6 +5,7 @@ app.mount('body')
 //store procedures
 app.use(require('./store-procedures/images'))
 app.use(require('./store-procedures/tags'))
+app.use(require('./store-procedures/deleteAlbum'))
 
 //styles
 import './style.css'

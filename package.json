@@ -7,7 +7,7 @@
 		"test": "nodemon --ignore dist --ignore .cache server"
 	},
 	"dependencies": {
-		"better-sqlite3": "^7.1.5",
+		"better-sqlite3": "^7.4.1",
 		"choo": "^7.1.0",
 		"fastify": "^3.17.0",
 		"fastify-file-upload": "^3.0.0",
@@ -18,7 +18,7 @@
 		"middie": "^5.2.0",
 		"nodemon": "^2.0.7",
 		"parcel-bundler": "^1.12.5",
-		"sass": "^1.34.0"
+		"sass": "^1.34.1"
 	},
 	"author": "Duhlicher Petru",
 	"license": "ISC"

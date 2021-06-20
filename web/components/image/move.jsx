@@ -7,4 +7,4 @@ module.exports = ({albumId, imageId, emit, state}) => <div>
 			<tr><td>{album.title}</td><td><button onclick={e => emit('chooseAlbumForImage', imageId, album._id)}>Choose</button></td></tr>
 		)}
 	</table>
-</div>
+</div> 

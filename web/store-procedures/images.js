@@ -1,5 +1,4 @@
-const $ = id => document.getElementById(id)
-const getJSON = (...params) => fetch(...params).then(res => res.json())
+const {getJSON, $} = require('./utils')
 module.exports = (state, emitter) => {
     state.page = {
         upload: {
@@ -70,8 +69,6 @@ module.exports = (state, emitter) => {
 
     })
 
-
-
     emitter.on('newAlbum', e => {
         e.preventDefault()
         e.stopPropagation()
@@ -83,6 +80,16 @@ module.exports = (state, emitter) => {
         button.setAttribute('disabled', 'disabled')
         button.innerText = 'Creating new album ...'
         getJSON('/api/album/new/' + albumName.value + '/' + albumDesc.value).then(res => {
+            const newAlbum = {
+                _id: res.lastInsertRowid,
+                title: albumName.value,
+                desc: albumDesc,
+                timestamp: new Date().toString(),
+                images: [],
+                children: []
+            }
+            state.page.mainAlbums.push(newAlbum)
+            state.page.albums.push(newAlbum)
             button.innerText = 'Created album'
             button.style.border = '2px solid limegreen'
             albumName.value = ''
@@ -91,7 +98,8 @@ module.exports = (state, emitter) => {
                 button.removeAttribute('disabled')
                 button.innerText = 'Create Album'
                 button.style.border = ''
-            }, 3000)
+                emitter.emit('render')
+            }, 500)
 
         })
     })

@@ -33,6 +33,7 @@ const loadSocketServer = async () => {
         server.get('/album/images/:albumID', (req, res) => res.send(db.getImagesFromAlbum(req.params.albumID)))
         server.get('/album/list/:albumID', (req, res) => res.send(db.getAlbumsFromFolder(req.params.albumID)))
         server.get('/image/move/:imageId/:albumID', (req, res) => res.send(db.changeImageAlbum(req.params)))
+        server.get('/album/remove/:albumID', (req, res) => res.send(db.removeAlbum(req.params.albumID)))
         done()
     }, { prefix: '/api' })
         // https://parceljs.org/api.html#bundler

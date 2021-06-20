@@ -6,7 +6,7 @@ const CreateAlbum = require('../components/album/create')
 const MoveAlbum = require('../components/album/move')
 const MoveImage = require('../components/image/move')
 const ImagePreview = require('../components/image/preview')
-
+const DeleteAlbum = require('../components/album/delete')
 const TagsSelector = ({ state, emit, albumId }) => <div>
     <div class="overlay" />
     <table>
@@ -34,13 +34,14 @@ const Album = ({state, emit, album, depth}) => {
         <span>{album.title}</span>
         <button class="tagToAlbum" onclick={e => emit('openPopup', <TagsSelector state={state} emit={emit} albumId={album._id} />)}>➕</button>
         <button class="moveAlbum" onclick={e => emit('openPopup', <MoveAlbum state={state} emit={emit} albumId={album._id} />)}>➡️</button>
+        <button class="deleteAlbum" onclick={e =>emit('openPopup', <DeleteAlbum emit={emit} albumId={album._id} />)}>❌</button>
         
     </div>
 }
 
 
 const displayAlbums = (state, emit, albums, depth, parent) => {
-    albums.forEach(album => {
+    albums && albums.forEach(album => {
         const albumTag = <Album state={state} emit={emit} depth={depth} album={album} />
         depth === 1 && albumTag.addEventListener('click', e => emit('moveIn', e))
         parent.appendChild(albumTag)

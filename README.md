@@ -29,17 +29,20 @@ npm start
 - [x] click on an individual picture make it fullscreen
 - [x] Exit button for zoomed images 
 - [x] connect tags for images
-- [ ] newAlbum is not in the albums structure BUG
+- [x] newAlbum is not in the albums structure BUG
+- [x] delete root option if its root element
+- [x] delete button for albums
 - [ ] connect tags for entire albums
 - [ ] microsoft image analisys api
 - [ ] search for images in albums and folders 
-- [ ] nice design of the whole app
-- [ ] set per to per connection (udp) for comunication between galleries on different devices
 - [ ] ability to delete images ,albums and folders
 - [ ] check for network(your online , offline)
+- [ ] nice design of the whole app
+- [ ] sort tags , sort by date, by location, by metadata
 - [ ] shared albums
 - [ ] share button to get a protected link 
-- [ ] sort tags , sort by date, by location, by metadata
 - [ ] thumbnailing
+- [ ] set per to per connection (udp) for comunication between galleries on different devices
+- [ ] adapt to Cordova for mobile 
 
 ![gallery system diagram](/gallery.png)
