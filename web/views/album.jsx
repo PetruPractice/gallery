@@ -21,7 +21,8 @@ const TagsSelector = ({ state, emit, albumId }) => <div>
 
 
 const Album = ({state, emit, album, depth}) => {
-    const backButton = !depth && album.parent ? <button class="back" onclick={e => emit('moveOut', e, album)}>Back</button> : ''
+    const backButton = !depth && album.parent ? <button class="back">Back</button> : ''
+    backButton && backButton.addEventListener('click', e => emit('moveOut', album))
     return <div class={'album album-depth-' + depth} albumId={album._id}>
         {backButton}
         <div class="imagesPreview">
@@ -43,7 +44,7 @@ const Album = ({state, emit, album, depth}) => {
 const displayAlbums = (state, emit, albums, depth, parent) => {
     albums && albums.forEach(album => {
         const albumTag = <Album state={state} emit={emit} depth={depth} album={album} />
-        depth === 1 && albumTag.addEventListener('click', e => emit('moveIn', e))
+        depth === 1 && albumTag.addEventListener('click', e => emit('moveIn', album))
         parent.appendChild(albumTag)
         displayAlbums(state, emit, album.children, depth + 1, albumTag)
     })
