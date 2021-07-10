@@ -25,7 +25,15 @@ const loadSocketServer = async () => {
 
             res.send(JSON.stringify({ status: 'ok' }))
         })
-
+        server.get('/album/all', (req, res) => {
+            const albums = JSON.parse(db.getAllAlbums())
+            const folders = JSON.parse(db.getFolders())
+            albums.forEach(album => {
+                album.images = JSON.parse(db.getImagesFromAlbum(album._id))
+                album.children = folders.filter(folder => folder.parentAlbumID === album._id).map(folder => folder.albumID)
+            })
+            res.send(JSON.stringify(albums))
+        })
         server.get('/album/new/:title/:desc', (req, res) => res.send(db.createAlbum(req.params)))
         server.get('/folder/new/:parentAlbumID/:albumID', (req, res) => res.send(db.addFolderAlbum(req.params)))
         server.get('/album/list', (req, res) => res.send(db.getAllAlbums()))

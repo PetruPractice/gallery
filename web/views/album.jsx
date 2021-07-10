@@ -21,7 +21,7 @@ const TagsSelector = ({ state, emit, albumId }) => <div>
 
 
 const Album = ({state, emit, album, depth}) => {
-    const backButton = depth === 0 && album.parent ? <button class="back" onclick={e => emit('moveOut', e, album)}>Back</button> : ''
+    const backButton = !depth && album.parent ? <button class="back" onclick={e => emit('moveOut', e, album)}>Back</button> : ''
     return <div class={'album album-depth-' + depth} albumId={album._id}>
         {backButton}
         <div class="imagesPreview">

@@ -42,7 +42,7 @@ npm start
 - [ ] shared albums
 - [ ] share button to get a protected link 
 - [ ] thumbnailing
-- [ ] set per to per connection (udp) for comunication between galleries on different devices
+- [ ] set peer to peer connection, (udp) for comunication between galleries on different devices
 - [ ] adapt to Cordova for mobile 
 
 ![gallery system diagram](/gallery.png)
