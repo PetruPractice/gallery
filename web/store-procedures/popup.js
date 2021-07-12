@@ -1,3 +1,5 @@
+const { $ } = require('./utils')
+
 module.exports = (state, emitter) => {
 
     emitter.on('openPopup', popup => {

@@ -11,7 +11,7 @@ Object.values(createTable).map(sql => db.exec(sql))
 const query = (sql, ...args) => JSON.stringify(db.prepare(sql).all(...args))
 const run = (sql, ...args) => JSON.stringify(db.prepare(sql).run(...args))
 const createAlbum = album => run('INSERT INTO album(title, desc) VALUES(@title, @desc)', album)
-const addImage = image => run('INSERT INTO images(filename, md5, size) VALUES(@name, @md5, @size)', image)
+const addImage = image => run('INSERT INTO images(filename, md5, size, gallery_id) VALUES(@name, @md5, @size, @albumID)', image)
 
 
 const getImagesFromAlbum = albumID => query('SELECT * FROM images WHERE gallery_id=?', albumID)

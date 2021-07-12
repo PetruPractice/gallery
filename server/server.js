@@ -19,7 +19,7 @@ const loadSocketServer = async () => {
             const bodyFiles = req.body['files[]']
             const images = Array.isArray(bodyFiles) ? bodyFiles : [bodyFiles]
             images.forEach(({ name, data, md5, size }) => {
-                db.addImage({ name, md5, size })
+                db.addImage({ name, md5, size, albumID: parseInt(req.body.albums)})
                 fs.writeFileSync(process.cwd() + '/web/images/' + name, data)
             })
 

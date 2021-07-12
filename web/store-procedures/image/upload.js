@@ -2,14 +2,19 @@ const {getJSON, $} = require('../utils')
 
 module.exports = (state, emitter) => {
 
-    emitter.on('navigate', () => {
-        emitter.emit('uploadPage')
-    })     // TODO : Remove the dependence on navigate!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    emitter.on('uploadPage', () => {
-        const uploadDiv = $('uploadImages')
-        if (!uploadDiv) return setTimeout(() => emitter.emit('uploadPage'), 0)
+    emitter.on('uploadPage', uploadDiv => {
         const form = uploadDiv.querySelector('form')
+        const albumChoice = form.querySelector('select')
+        albumChoice.addEventListener('click', e => {
+            e.preventDefault()
+            e.stopPropagation()
+        })
+
+        uploadDiv.querySelector('span').remove()
+        const option = albumChoice.querySelector('option[value="0"]')
+        option && option.setAttribute('selected', 'selected')
+
+
         const strong = form.querySelector('strong')
         const uploader = form.querySelector('input[type="file"]')
         const span = form.querySelector('span')
