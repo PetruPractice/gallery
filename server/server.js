@@ -1,5 +1,6 @@
 const fs = require('fs')
 const db = require('./db')
+const imageInfo = require('imageinfo')
 const loadSocketServer = async () => {
     const server = require('fastify')()
     await server.register(require('middie'))
@@ -10,7 +11,10 @@ const loadSocketServer = async () => {
             res.send(JSON.stringify(JSON.parse(db.getImagesFromAlbum(0)).map(image => '/api/images/' + image.title))) // TODO: Images can exist in other albums too, fix this
         )
         server.get('/images/:image', (req, res) => res.sendFile('/web/images/' + req.params.image))
-        server.get('/tag/link/:tagId/:imageId', (req, res) => res.send(db.linkTag(req.params)))
+        server.get('/tag/link/:tagId/:imageId', (req, res) => {
+            const query = db.linkTag(req.params)
+            res.send(query)
+        })
         server.get('/tag/create/:name/:color/:desc', (req, res) => res.send(db.createTag(req.params)))
         server.get('/tags/:imageId', (req, res) => res.send(db.tagsOfImage(req.params.imageId)))
         server.get('/tag/list', (req, res) => res.send(db.listTags()))
@@ -29,7 +33,12 @@ const loadSocketServer = async () => {
             const albums = JSON.parse(db.getAllAlbums())
             const folders = JSON.parse(db.getFolders())
             albums.forEach(album => {
-                album.images = JSON.parse(db.getImagesFromAlbum(album._id))
+                album.images = JSON.parse(db.getImagesFromAlbum(album._id)).map(img => {
+                    const info = imageInfo(fs.readFileSync(__dirname + '/../web/images/' + img.filename))
+                    img.width = info.width
+                    img.height = info.height
+                    return img
+                })
                 album.children = folders.filter(folder => folder.parentAlbumID === album._id).map(folder => folder.albumID)
             })
             res.send(JSON.stringify(albums))

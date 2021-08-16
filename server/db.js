@@ -1,7 +1,7 @@
 const db = require('better-sqlite3')('gallery.db', {})
 const createTable = {
     images: 'CREATE TABLE IF NOT EXISTS images(_id INTEGER PRIMARY KEY, title TEXT, desc TEXT, size INTEGER DEFAULT 0, filename TEXT NOT NULL UNIQUE, gallery_id INTEGER DEFAULT 0, location TEXT, type INTEGER, md5 TEXT, timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)',
-    tags: 'CREATE TABLE IF NOT EXISTS tags(_id INTEGER PRIMARY KEY, name TEXT, color TEXT, desc TEXT)',
+    tags: 'CREATE TABLE IF NOT EXISTS tags(_id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE, color TEXT, desc TEXT)',
     images2tags: 'CREATE TABLE IF NOT EXISTS images2tags(imageID INTEGER NOT NULL, tagID INTEGER NOT NULL, PRIMARY KEY(imageID, tagID))',
     album: 'CREATE TABLE IF NOT EXISTS album(_id INTEGER PRIMARY KEY, title TEXT, desc TEXT, timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)',
     folder: 'CREATE TABLE IF NOT EXISTS folder(parentAlbumID INTEGER NOT NULL, albumID INTEGER NOT NULL, PRIMARY KEY(parentAlbumID, albumID))'
@@ -29,12 +29,15 @@ const addFolderAlbum = folder => {
     const insertQuery = 'INSERT INTO folder(parentAlbumID, albumID) VALUES(@parentAlbumID, @albumID)'
     return run(folders.length ? updateQuery : insertQuery, folder)
 }
-const linkTag = o => run('INSERT INTO images2tags(imageID, tagID) VALUES(@imageId, @tagId)', o)
+const linkTag = o => run('INSERT OR IGNORE INTO images2tags(imageID, tagID) VALUES(@imageId, @tagId)', o)
 const tagsOfImage = imageId => query('SELECT tags._id as _id, tags.name as name, tags.color as color, tags.desc as desc FROM images2tags INNER JOIN tags ON images2tags.tagID=tags._id WHERE images2tags.imageID=?', imageId)
     // pentru test console.log(createTag({ name: 'sky', color: '#343269', desc: 'beauty' }))
 const changeImageAlbum = params => run('UPDATE images SET gallery_id=@albumID WHERE _id=@imageId', params)
 
-const removeAlbum = albumId => run('DELETE FROM album where _id=?', albumId)
+const removeAlbum = albumId => { 
+    run('DELETE FROM folder WHERE parentAlbumID=? OR albumID=?', albumId, albumId)
+    return run('DELETE FROM album where _id=?', albumId)
+}
 
 
 run('INSERT OR IGNORE INTO album(_id, title, desc) VALUES(0, @title, @desc)', { title: 'camera roll', desc: 'default album' })
