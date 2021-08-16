@@ -1,68 +1,16 @@
-const {React, View, BlockInput, Shadow, Footer} = require('../template.jsx')
-const Search = require('../components/search')
-const TagSort = require('../components/tag/sort')
-const ImageList = require('../components/image/list')
-const CreateAlbum = require('../components/album/create')
-const MoveAlbum = require('../components/album/move')
-const MoveImage = require('../components/image/move')
+const {React, View } = require('../template.jsx')
+// const Search = require('../components/search')
+// const TagSort = require('../components/tag/sort')
+// const ImageList = require('../components/image/list')
 const ImagePreview = require('../components/image/preview')
-const DeleteAlbum = require('../components/album/delete')
-const TagsSelector = ({ state, emit, albumId }) => <div>
-    <div class="overlay" />
-    <table>
-        <tr><th>Tag Name</th><th>Apply Tag to Whole Album</th></tr>
-        {/** TODO: get all tags for the given album that can be applied to the album */}
-        {state.page.tags.map(tag => <tr>
-            <td>{tag.name}</td>
-            <td><button onclick={e => emit('applyTagToWholeAlbum', e, tag._id, albumId)}>Choose</button> </td>
-        </tr>)}
-    </table>
-</div>
-
-
-const Album = ({state, emit, album, depth}) => {
-    const backButton = !depth && album.parent ? <button class="back">Back</button> : ''
-    backButton && backButton.addEventListener('click', e => emit('moveOut', album))
-    return <div class={'album album-depth-' + depth} albumId={album._id}>
-        {backButton}
-        <div class="imagesPreview">
-            {album.images && album.images.map(img => <div>
-                <img src={'/api/images/' + img.filename} onclick={e => emit('imageZoom', img._id)}/>
-                <button onclick={e => emit('openPopup', <MoveImage state={state} emit={emit} imageId={img._id} />)}>🏞️</button>
-            </div>)}
-
-        </div>
-        <span>{album.title}</span>
-        <button class="tagToAlbum" onclick={e => emit('openPopup', <TagsSelector state={state} emit={emit} albumId={album._id} />)}>➕</button>
-        <button class="moveAlbum" onclick={e => emit('openPopup', <MoveAlbum state={state} emit={emit} albumId={album._id} />)}>➡️</button>
-        <button class="deleteAlbum" onclick={e =>emit('openPopup', <DeleteAlbum emit={emit} albumId={album._id} />)}>❌</button>
-        
-    </div>
-}
-
-
-const displayAlbums = (state, emit, albums, depth, parent) => {
-    albums && albums.forEach(album => {
-        const albumTag = <Album state={state} emit={emit} depth={depth} album={album} />
-        depth === 1 && albumTag.addEventListener('click', e => emit('moveIn', album))
-        parent.appendChild(albumTag)
-        displayAlbums(state, emit, album.children, depth + 1, albumTag)
-    })
-}
+const Nav = require('../components/nav')
+const ListAlbumPages = require('../components/album/page/albums')
+const { AlbumsList } = require('../components/album/list')
 module.exports = (state, emit) => {
     if (state.page.imagePreview || state.page.imagePreview === 0) return ImagePreview(state, emit)
-    const albums = <div class="albums" />
-    displayAlbums(state, emit, state.page.mainAlbums, 0, albums)
     return <View>
-        {Search(state, emit)}
-        <a href="/tags">Tags</a>
-        {TagSort(state, emit)}
-        <button onclick={e => emit('openPopup', <CreateAlbum state={state} emit={emit} />)}>Add Album</button>
-        {/* <button onclick={() => emit('newFolder')}>Add Folder</button> */}
-
-        {ImageList(state, emit)}
-        <a href="/upload">Upload Image</a><br/><br/><br/>
-        {albums}
-        <div id='popups'></div>
+        {Nav(state, emit)}
+        <AlbumsList albums={state.page.mainAlbums} />
+        <ListAlbumPages albums={state.page.albums} tags={state.page.tags} emit={emit} />
     </View>
 }

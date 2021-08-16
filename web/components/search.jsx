@@ -1,4 +1,14 @@
-const React = require('jsx-dom')
 module.exports = (state, emit) => {
-    return <div class="test"><input type="text" placeholder="search ..."></input><p>Test</p></div>
+    // const icon = document.querySelector('.icon')
+    // const search = document.querySelector('.search')
+    // icon.onclick = () => {search.classList.toggle('active')}
+    return <div class="search">
+        <div className="icon"></div>
+        <div className="input">
+            <input type="text" placeholder="Search" id="search"/>
+        </div>
+        <span class="clear" onclick={ e => emit(document.getElementById('search').value = '')}></span>
+        
+    </div>
+
 }

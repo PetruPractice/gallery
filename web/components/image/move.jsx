@@ -1,4 +1,3 @@
-const React = require('jsx-dom')
 module.exports = ({albumId, imageId, emit, state}) => <div>
 	<div class="overlay" />
 	<table>

@@ -1,4 +1,3 @@
-const React = require('jsx-dom')
 
 const Shadow = props => <>
 	<div class="bg-top"> <div class="bg-inner"></div> </div>

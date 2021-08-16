@@ -26,9 +26,7 @@ module.exports = (state, emitter) => {
     })
 
     emitter.on('applyTagToWholeAlbum', (e, tagId, albumId) => {
-        const tr = e.target.parentElement.parentElement
-        const popup = tr.parentElement.parentElement
-        tr.remove()
+        // TODO
     })
 
 }

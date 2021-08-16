@@ -22,6 +22,9 @@ module.exports = (state, emitter) => {
         const enter = e => {
             uploadDiv.classList.add('uploadImagesOver')
             strong.classList.add('uploadStrongHover')
+
+            // M.Modal.getInstance(uploadPopup).open()
+            
         }
         const exit = e => {
             uploadDiv.classList.remove('uploadImagesOver')

@@ -9,5 +9,4 @@ module.exports = (state, emitter) => {
         mainAlbums: [],
         images2tags: {}
     }
-    
 }
