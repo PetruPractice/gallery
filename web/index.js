@@ -1,3 +1,4 @@
+window.React = require('jsx-dom')
 const choo = require('choo')
 const app = choo()
 app.mount('body')
@@ -18,7 +19,8 @@ app.use(require('./store-procedures/image/upload'))
 
 //styles
 import './style.css'
-
+import 'materialize-css/dist/css/materialize.min.css'
+import 'materialize-css/dist/js/materialize.min'
 //routes
 //  app.route('/', require('./views/join-room'))
 // app.route('/:roomID/:name', require('./views/stream'))
