@@ -1,14 +1,11 @@
-module.exports = ({emit, albumId}) => {
-    const deletePopup = <div class="row card modal modal-fixed-footer s12" id={'delete_album_' + albumId}>
+module.exports = ({emit, albumId}) => (
+    <div class="row card modal modal-fixed-footer s12 delete_album" id={'delete_album_' + albumId}>
         <div class="deleteAlbumBox modal-content">
-            <h4>Are you sure you want to delete Album?</h4>
+            <h4>Are you sure you want to delete this Album?</h4>
         </div>
         <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat red" onclick={e => emit('deleteAlbum', albumId)}>Delete</a>
+            <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
+            <button class="modal-close waves-effect waves-green btn-flat red" onclick={e => emit('deleteAlbum', albumId)}>Delete</button>
         </div>
     </div>
-
-    M.Modal.init(deletePopup, {})
-    return deletePopup    
-}
+)

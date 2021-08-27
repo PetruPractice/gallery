@@ -1,5 +1,5 @@
-module.exports = ({tags, emit, albumId}) => {
-    const applyTagPopup = <div class="row card modal s12" id={'tag_album_' + albumId}>
+module.exports = ({tags, emit, albumId}) => (
+    <div class="row card modal s12 tag_album" id={'tag_album_' + albumId}>
         <div class="modal-content">
 		<table>
             <tr><th>Tag Name</th><th>Apply Tag to Whole Album</th></tr>
@@ -12,10 +12,7 @@ module.exports = ({tags, emit, albumId}) => {
 
         </div>
         <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+            <button class="modal-close waves-effect waves-green btn-flat">Cancel</button>
         </div>
     </div>
-
-    M.Modal.init(applyTagPopup, {})
-    return applyTagPopup
-}
+)

@@ -1,5 +1,5 @@
 const AlbumsList = ({albums}) => <div class="container">
-    <div class="row card">
+    <div class="row card albums_list">
         <ListAlbums albums={albums} />
     </div>
 </div>
