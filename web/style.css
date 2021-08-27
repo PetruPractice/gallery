@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
 
-#uploadImages {
+/* #uploadImages {
     font-size: 1.25rem;
-    /* 20 */
+    
     background-color: #c8dadf;
     position: relative;
     outline: 2px dashed #92b0b3;
@@ -14,7 +14,7 @@
     justify-content: center;
     text-align: center;
     flex-direction: column;
-}
+} */
 
 #uploadImages>form {
     width: 100%;
@@ -26,10 +26,12 @@
     align-items: center;
 }
 
-#uploadImages>form>input[type="file"] {
+#uploadImages>form input[type="file"] {
+    left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed;
     opacity: 0;
 }
 
@@ -214,11 +216,6 @@
     transform: rotate(315deg);
 }
 
-.albums {
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-}
 .album {
     display: inline-block;
     position: relative;
