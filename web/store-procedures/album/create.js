@@ -1,10 +1,9 @@
-const {getJSON, $} = require('../utils')
+const {getJSON} = require('../utils')
 
 module.exports = (state, emitter) => {
     
     emitter.on('newAlbum', e => {
         e.preventDefault()
-        e.stopPropagation()
         const form = e.target
         const albumName = form.querySelector('input')
         const albumDesc = form.querySelector('textarea')
@@ -21,7 +20,6 @@ module.exports = (state, emitter) => {
                 images: [],
                 children: []
             }
-            state.page.mainAlbums.push(newAlbum)
             state.page.albums.push(newAlbum)
             button.innerText = 'Created album'
             button.style.border = '2px solid limegreen'
@@ -33,7 +31,8 @@ module.exports = (state, emitter) => {
                 button.style.border = ''
                 emitter.emit('render')
             }, 500)
-
         })
+        return false
+
     })
 }

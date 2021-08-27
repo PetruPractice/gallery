@@ -6,7 +6,6 @@ module.exports = (state, emitter) => {
         },
         tags: [],
         albums: [],
-        mainAlbums: [],
         images2tags: {}
     }
 }
