@@ -14,9 +14,18 @@ module.exports = (state, emitter) => {
         })
 
     })
-    emitter.on('addTag', (imageId, tagId) => {
+    emitter.on('tag.add', (tagId, imageId) => {
         fetch('/api/tag/link/' + tagId + '/' + imageId).then(res => res.json()).then(res => {
-            emitter.emit('tags:forImage', imageId)
+        })
+    })
+
+    emitter.on('tag.delete', (tagId, imageId) => {
+        fetch('/api/tag/delete/' + tagId + '/' + imageId).then(res => res.json()).then(res => {
+            state.page.albums.forEach(album => album.images.forEach(img => {
+                if (Array.isArray(img.tags) && img._id === imageId) {
+                    img.tags = img.tags.filter(tag => tag._id !== tagId)
+                }
+            }))
         })
     })
     
