@@ -11,10 +11,8 @@ const loadSocketServer = async () => {
             res.send(JSON.stringify(JSON.parse(db.getImagesFromAlbum(0)).map(image => '/api/images/' + image.title))) // TODO: Images can exist in other albums too, fix this
         )
         server.get('/images/:image', (req, res) => res.sendFile('/web/images/' + req.params.image))
-        server.get('/tag/link/:tagId/:imageId', (req, res) => {
-            const query = db.linkTag(req.params)
-            res.send(query)
-        })
+        server.get('/tag/link/:tagId/:imageId', (req, res) => res.send(db.linkTag(req.params)))
+        server.get('/tag/delete/:tagId/:imageId', (req, res) => res.send(db.deleteTag(req.params)))
         server.get('/tag/create/:name/:color/:desc', (req, res) => res.send(db.createTag(req.params)))
         server.get('/tags/:imageId', (req, res) => res.send(db.tagsOfImage(req.params.imageId)))
         server.get('/tag/list', (req, res) => res.send(db.listTags()))
@@ -37,6 +35,7 @@ const loadSocketServer = async () => {
                     const info = imageInfo(fs.readFileSync(__dirname + '/../web/images/' + img.filename))
                     img.width = info.width
                     img.height = info.height
+                    img.tags = db.tagsOfImage(img._id)
                     return img
                 })
                 album.children = folders.filter(folder => folder.parentAlbumID === album._id).map(folder => folder.albumID)
@@ -50,6 +49,7 @@ const loadSocketServer = async () => {
         server.get('/album/images/:albumID', (req, res) => res.send(db.getImagesFromAlbum(req.params.albumID)))
         server.get('/album/list/:albumID', (req, res) => res.send(db.getAlbumsFromFolder(req.params.albumID)))
         server.get('/image/move/:imageId/:albumID', (req, res) => res.send(db.changeImageAlbum(req.params)))
+        server.get('/image/delete/:imageId', (req, res) => res.send(db.removeImage(req.params.imageId)))
         server.get('/album/remove/:albumID', (req, res) => res.send(db.removeAlbum(req.params.albumID)))
         done()
     }, { prefix: '/api' })

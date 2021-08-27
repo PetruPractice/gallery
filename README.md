@@ -21,28 +21,31 @@ npm test
 npm start
 ```
 
-# TODO
+# Bugs
+- [ ] Moving albums stop being interactive & structure does not update
+- [ ] 
+# Features
+- [x] image page
+- [x] image tags
+    - [x] tag delete
+- [ ] image actions
+    - [ ] move
+    - [ ] delete
 
-- [x] Hierarchy of folders and albums with hiding privious album's and folder's display
-- [x] back button set the priviousy display
-- [x] click on an album of pictures
-- [x] click on an individual picture make it fullscreen
-- [x] Exit button for zoomed images 
-- [x] connect tags for images
-- [x] newAlbum is not in the albums structure BUG
-- [x] delete root option if its root element
-- [x] delete button for albums
 - [ ] connect tags for entire albums
-- [ ] microsoft image analisys api
+    - [ ] make its own table for it
 - [ ] search for images in albums and folders 
-- [ ] ability to delete images ,albums and folders
-- [ ] check for network(your online , offline)
 - [ ] nice design of the whole app
-- [ ] sort tags , sort by date, by location, by metadata
+- [ ] sort tags, sort by date, by location, by metadata
+
+------ 
 - [ ] shared albums
 - [ ] share button to get a protected link 
 - [ ] thumbnailing
-- [ ] set peer to peer connection, (udp) for comunication between galleries on different devices
+- [ ] check for network(your online , offline)
 - [ ] adapt to Cordova for mobile 
+- [ ] set peer to peer connection, (udp) for comunication between galleries on different devices
+- [ ] make web and mobile app distributed
+- [ ] microsoft image analisys api???
 
 ![gallery system diagram](/gallery.png)
