@@ -1,41 +1,18 @@
-module.exports = (state, emit) => {
-    const uploadPopup = <div class="row card modal modal-fixed-footer s12" id="upload">
-            <span>Loading...</span>
-            <form id="uploadForm" enctype="multipart/form-data">
+module.exports = ({state, emit}) => (
+    <div class="row card modal modal-fixed-footer s12" id="uploadImages" style="height:80vh">
+        <form id="uploadForm" enctype="multipart/form-data" onsubmit={e => emit('uploadPage', e)}>
             <div class="modal-content">
-                <input type="file" name="files[]" multiple />
                 <label for="file">
                     <strong>Choose a file</strong>
-                    
                 </label>
-                <select name="albums" style="z-index:999;">
-                    {state.page.albums.map(album => <option value={album._id} >{album.title}</option> )}
-               </select>
-
+                <span>Loading...</span>
+                <input type="file" name="files[]" multiple />
+                <br /><br />
+                <select name="albums" style="display: block">
+                    {state.page.albums.map(album => <option key={album._id} value={album._id}>{album.title}</option>)}
+                </select>
+                <button class="modal-close waves-effect waves-green btn" type="submit">Upload</button>
             </div>
-            <div class="modal-footer">                
-                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Upload</a>
-            </div>  
-            </form> 
+        </form> 
     </div>
-
-    M.Modal.init(uploadPopup , {})
-
-    // const uploadImages = (<div id='uploadImages'>
-    //     <span>Loading...</span>
-    //     <form id="uploadForm" enctype="multipart/form-data">
-    //         <input type="file" name="files[]" multiple />
-    //         <label for="file">
-    //             <strong>Choose a file</strong>
-    //             <span> or drag it here.</span>
-    //         </label>
-    //         <select name="albums" style="z-index:999;">
-    //             {state.page.albums.map(album => <option value={album._id} >{album.title}</option> )}
-    //         </select>
-    //         <button type="submit">Upload</button>
-    //     </form>
-
-    // </div>)
-    setTimeout(() => emit('uploadPage', uploadPopup), 400)
-    return uploadPopup
-}
+)
