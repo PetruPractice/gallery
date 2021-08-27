@@ -12,9 +12,7 @@ app.use(require('./store-procedures/album/delete'))
 app.use(require('./store-procedures/album/enter-exit'))
 app.use(require('./store-procedures/album/move'))
 app.use(require('./store-procedures/album/populate'))
-app.use(require('./store-procedures/image/enter-exit'))
 app.use(require('./store-procedures/image/move'))
-app.use(require('./store-procedures/image/tags'))
 app.use(require('./store-procedures/image/upload'))
 
 //styles
