@@ -7,9 +7,11 @@ import App from '../components/app/main.jsx'
 // const { ImagePage } = require('../components/album/page/images')
 // const { AlbumsList } = require('../components/album/list')
 // const UploadPage = require('../components/image/upload')
+import AlbumList from '../components/album/list.jsx'
 
 export default (state, emit) => (
   <App>
+    <AlbumList />
     {/* <Nav emit={emit} /> */}
     {/* <AlbumsList albums={state.page.albums.filter(album => !album.parent)} /> */}
     {/* <ListAlbumPages albums={state.page.albums} tags={state.page.tags} emit={emit} /> */}

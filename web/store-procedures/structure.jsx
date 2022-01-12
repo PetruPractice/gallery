@@ -29,10 +29,10 @@ const setup = store => {
     const baseURL = 'http://localhost:8080'
     GET.setup(baseURL, { header: {} })
 
-    // populate(store)
+    populate(store)
 }
 
-export default (state = initialState, { store, data }) => {
+export default (state = initialState, { type, store, data }) => {
     type === 'getData' && setup(store)
     type === 'updateData' && (state = Object.merge(state, data))
     return { ...state }
