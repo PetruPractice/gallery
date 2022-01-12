@@ -5,6 +5,9 @@ const loadSocketServer = async () => {
     const server = require('fastify')()
     await server.register(require('middie'))
     server.register(require('fastify-static'), { root: process.cwd() })
+
+    await server.register(require('fastify-cors'), { origin: '*', methods: ['POST', 'GET'] })
+
     await server.register(async (server, opts, done) => {
         await server.register(require('fastify-file-upload'))
         server.get('/images', (req, res) =>
@@ -21,7 +24,7 @@ const loadSocketServer = async () => {
             const bodyFiles = req.body['files[]']
             const images = Array.isArray(bodyFiles) ? bodyFiles : [bodyFiles]
             images.forEach(({ name, data, md5, size }) => {
-                db.addImage({ name, md5, size, albumID: parseInt(req.body.albums)})
+                db.addImage({ name, md5, size, albumID: parseInt(req.body.albums) })
                 fs.writeFileSync(process.cwd() + '/web/images/' + name, data)
             })
 
@@ -54,9 +57,8 @@ const loadSocketServer = async () => {
         done()
     }, { prefix: '/api' })
         // https://parceljs.org/api.html#bundler
-    server.parcel = path => server.use(new(require('parcel-bundler'))(path, { publicUrl: '/frontend' }).middleware())
+    // server.parcel = path => server.use(new(require('parcel-bundler'))(path, { publicUrl: '/frontend' }).middleware())
     return server
 }
-
 
 module.exports = loadSocketServer

@@ -15,7 +15,6 @@ const run = (sql, ...args) => JSON.stringify(db.prepare(sql).run(...args))
 const createAlbum = album => run('INSERT INTO album(title, desc) VALUES(@title, @desc)', album)
 const addImage = image => run('INSERT INTO images(filename, md5, size, gallery_id) VALUES(@name, @md5, @size, @albumID)', image)
 
-
 const getImagesFromAlbum = albumID => query('SELECT * FROM images WHERE gallery_id=?', albumID)
 const getAlbumsFromFolder = albumID => query('SELECT * FROM album INNER JOIN folder ON album._id=folder.albumID AND folder.parentAlbumID=?', albumID)
 const getFolders = () => query('SELECT * FROM folder')
@@ -37,7 +36,7 @@ const tagsOfImage = imageId => query('SELECT tags._id as _id, tags.name as name,
     // pentru test console.log(createTag({ name: 'sky', color: '#343269', desc: 'beauty' }))
 const changeImageAlbum = params => run('UPDATE images SET gallery_id=@albumID WHERE _id=@imageId', params)
 
-const removeAlbum = albumId => { 
+const removeAlbum = albumId => {
     run('DELETE FROM folder WHERE parentAlbumID=? OR albumID=?', albumId, albumId)
     return run('DELETE FROM album where _id=?', albumId)
 }
@@ -51,12 +50,25 @@ const removeImage = imageId => {
 }
 
 run('INSERT OR IGNORE INTO album(_id, title, desc) VALUES(0, @title, @desc)', { title: 'camera roll', desc: 'default album' })
-    //safe db close
+    // safe db close
 process.on('exit', () => db.close())
 process.on('SIGHUP', () => process.exit(128 + 1))
 process.on('SIGINT', () => process.exit(128 + 2))
 process.on('SIGTERM', () => process.exit(128 + 15))
-module.exports = { 
-    createTag, listTags, createAlbum, getImagesFromAlbum, getAlbumsFromFolder, removeAlbum, deleteTag,
-    getFolders, getAllAlbums, addImage, addFolderAlbum, linkTag, tagsOfImage, changeImageAlbum, removeImage
+module.exports = {
+    createTag,
+listTags,
+createAlbum,
+getImagesFromAlbum,
+getAlbumsFromFolder,
+removeAlbum,
+deleteTag,
+    getFolders,
+getAllAlbums,
+addImage,
+addFolderAlbum,
+linkTag,
+tagsOfImage,
+changeImageAlbum,
+removeImage
 }

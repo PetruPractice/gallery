@@ -7,5 +7,5 @@ module.exports = (state, emitter) => {
     emitter.on('moveOut', album => {
         delete album.isIn
         emitter.emit('render')
-    })   
+    })
 }

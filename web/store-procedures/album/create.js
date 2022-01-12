@@ -1,7 +1,6 @@
-const {getJSON} = require('../utils')
+const { getJSON } = require('../utils')
 
 module.exports = (state, emitter) => {
-    
     emitter.on('newAlbum', e => {
         e.preventDefault()
         const form = e.target
@@ -33,6 +32,5 @@ module.exports = (state, emitter) => {
             }, 500)
         })
         return false
-
     })
 }

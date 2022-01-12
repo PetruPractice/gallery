@@ -1,3 +1,3 @@
 module.exports = (state, emit) => {
-    return <div></div>
+    return <div />
 }

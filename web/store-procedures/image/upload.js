@@ -1,11 +1,10 @@
-const {getJSON, $} = require('../utils')
+const { getJSON, $ } = require('../utils')
 
 module.exports = (state, emitter) => {
-    
     document.body.addEventListener('dragenter', () => {
         const uploadPopup = document.getElementById('uploadImages')
         M.Modal.getInstance(uploadPopup).open()
-        if(!state.onDrop) {
+        if (!state.onDrop) {
             state.onDrop = true
             uploadPopup.addEventListener('drop', e => emitter.emit('droppedImages', e, uploadPopup))
         }
@@ -33,7 +32,7 @@ module.exports = (state, emitter) => {
         select.options[0].selected = true
         uploader.style.width = '0px'
     })
-    // document.getElementById('uploadImage').addEventListener('dragover', e => {    
+    // document.getElementById('uploadImage').addEventListener('dragover', e => {
     // document.body.addEventListener('dragleave', () => {
     //     const uploadPopup = document.getElementById('upload')
     //     M.Modal.getInstance(uploadPopup).close()
@@ -52,7 +51,7 @@ module.exports = (state, emitter) => {
         const button = form.querySelector('button')
         button.setAttribute('disabled', 'disabled')
         button.innerText = 'Uploading ...'
-        getJSON('/api/upload', { 
+        getJSON('/api/upload', {
             body: new FormData(form),
             method: 'post'
         }).then(res => {
@@ -77,7 +76,6 @@ module.exports = (state, emitter) => {
         // const option = albumChoice.querySelector('option[value="0"]')
         // option && option.setAttribute('selected', 'selected')
 
-
         // const strong = form.querySelector('strong')
         // const uploader = form.querySelector('input[type="file"]')
         // const span = form.querySelector('span')
@@ -87,7 +85,7 @@ module.exports = (state, emitter) => {
         //     strong.classList.add('uploadStrongHover')
 
         //     M.Modal.getInstance(uploadPopup).open()
-            
+
         // }
         // const exit = e => {
         //     uploadDiv.classList.remove('uploadImagesOver')
@@ -118,6 +116,5 @@ module.exports = (state, emitter) => {
         //     e.stopPropagation()
         //     return false
         // })
-
     })
 }
