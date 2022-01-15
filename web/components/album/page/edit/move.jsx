@@ -1,22 +1,43 @@
-const ChooseButton = ({ emit, albumId, parentAlbumId, title, style }) => (
-  <tr style={style}>
-    <td>{title}</td>
-    <td><button class='modal-close waves-effect waves-green btn' onclick={e => emit('chooseAlbum', albumId, parentAlbumId)}>Choose</button></td>
-  </tr>
-)
+import css from 'classnames'
+import { useSelector } from 'react-redux'
 
-module.exports = ({ albums, emit, albumId }) => (
-  <div class='row card modal s12 move_album' id={'move_album_' + albumId}>
-    <div class='modal-content'>
-      <table>
-        <tr><th>Album Name</th><th>Pick</th></tr>
-        <ChooseButton emit={emit} albumId={albumId} parentAlbumId={-1} title='ROOT' style={albums.filter(album => !album.parent).some(album => album._id === albumId) && 'display: none'} />
-        {albums.filter(album => album._id !== albumId).map(album => <ChooseButton emit={emit} albumId={albumId} parentAlbumId={album._id} title={album.title} />)}
-      </table>
+const closeMoveAlbum = id => document.getElementById('move_album_' + id).classList.remove('is-active')
 
-    </div>
-    <div class='modal-footer'>
-      <button class='modal-close waves-effect waves-green btn-flat'>Cancel</button>
+const ChooseButton = ({ albumId, parentAlbumId, title, style }) => (
+  <div class={'row columns ' + (style || '')}>
+    <div class='column is-6'>{title}</div>
+    <div class='column is-6'>
+      <button onclick={e => closeMoveAlbum(albumId, 'chooseAlbum', parentAlbumId, albumId)}>Choose</button>
     </div>
   </div>
 )
+
+export default ({ albumId }) => {
+  const albums = useSelector(state => state.page.albums)
+  return (
+    <div class="modal" id={'move_album_' + albumId}>
+      <div class="modal-background" onClick={e => closeMoveAlbum(albumId)}></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Tag Album</p>
+          <button class="delete" aria-label="close" onClick={e => closeMoveAlbum(albumId)}></button>
+        </header>
+        <section class="modal-card-body">
+          <div class='rows'>
+            <div class='row columns'>
+              <div class='column is-6'>Album Name</div>
+              <div class='column is-6'>Pick album to move to</div>
+            </div>
+
+            <ChooseButton albumId={albumId} parentAlbumId={-1} title='ROOT' style={css({'is-hidden': albums.filter(album => !album.parent).some(album => album._id === albumId)})} />
+
+            {albums.filter(album => album._id !== albumId).map(album => (
+              <ChooseButton albumId={albumId} parentAlbumId={album._id} title={album.title} />
+            ))}
+          </div>
+          {/** TODO: get all tags for the given album that can be applied to the album */}
+        </section>
+      </div>
+    </div>
+  )
+}

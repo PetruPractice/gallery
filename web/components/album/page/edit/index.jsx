@@ -1,20 +1,25 @@
-const DeletePage = require('./delete')
-const MovePage = require('./move')
-const ApplyTagPage = require('./applyTag')
+import DeletePage from './delete.jsx'
+import MovePage from './move.jsx'
+import ApplyTagPage from './applyTag.jsx'
 
-const EditButton = ({ albums, tags, emit, albumId }) => (
+const AlbumAction = ({action, alt, icon, color, albumId}) => (
+  <a class='button modal-trigger' alt={alt} data-target={action + '_album_' + albumId} style='padding: 1rem'>
+    <i class={'is-size-3 fas fa-' + icon + ' has-text-' + color}></i>
+  </a>
+)
+
+const actions = [
+  {action: 'delete', alt: 'Delete Album', icon: 'trash', color: 'danger'},
+  {action: 'move', alt: 'Move Album', icon: 'compress-arrows-alt', color: 'primary'},
+  {action: 'tag', alt: 'Add Tag', icon: 'tags', color: 'info'}  
+]
+
+export default ({ albumId }) => (
   <div class='fixed-action-btn edit_button'>
-    <a class='btn-floating btn-large red'><i class='large material-icons'>mode_edit</i></a>
-    <ul>
-      <li data-target={'delete_album_' + albumId} class='modal-trigger'><a class='btn-floating red' alt='Delete Album'><i class='material-icons'>clear</i></a></li>
-      <li data-target={'move_album_' + albumId} class='modal-trigger'><a class='btn-floating blue' alt='Move Album'><i class='material-icons'>exit_to_app</i></a></li>
-      <li data-target={'tag_album_' + albumId} class='modal-trigger'><a class='btn-floating green darken-1' alt='Add Tag'><i class='material-icons'>sell</i></a></li>
-    </ul>
-
-    <DeletePage emit={emit} albumId={albumId} />
-    <MovePage emit={emit} albumId={albumId} albums={albums} />
-    <ApplyTagPage emit={emit} albumId={albumId} tags={tags} />
-
+    {actions.map(o => <AlbumAction {...o} albumId={albumId} />)}
+    <DeletePage albumId={albumId} />
+    <MovePage albumId={albumId} />
+    <ApplyTagPage albumId={albumId} />
   </div>
 )
-module.exports = { EditButton }
+

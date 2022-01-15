@@ -1,17 +1,5 @@
-module.exports = (state, emitter) => {
-    emitter.on('createTag', e => {
-        e.preventDefault()
+export default (state={}, emitter) => {
 
-        const form = new FormData(e.target)
-
-        const name = form.get('tagName')
-        const color = form.get('tagColor').replace('#', '')
-        const desc = form.get('tagDesc')
-        fetch(baseURL + '/api/tag/create/' + [name, color, desc].join('/')).then(res => res.json()).then(res => {
-            console.log('tag create res', res)
-            emitter.emit('listTags')
-        })
-    })
     emitter.on('tag.add', (tagId, imageId) => {
         fetch(baseURL + '/api/tag/link/' + tagId + '/' + imageId).then(res => res.json()).then(res => {
         })

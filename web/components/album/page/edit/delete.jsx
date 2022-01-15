@@ -1,11 +1,17 @@
-module.exports = ({ emit, albumId }) => (
-  <div class='row card modal modal-fixed-footer s12 delete_album' id={'delete_album_' + albumId}>
-    <div class='deleteAlbumBox modal-content'>
-      <h4>Are you sure you want to delete this Album?</h4>
-    </div>
-    <div class='modal-footer'>
-      <button class='modal-close waves-effect waves-green btn-flat'>Cancel</button>
-      <button class='modal-close waves-effect waves-green btn-flat red' onclick={e => emit('deleteAlbum', albumId)}>Delete</button>
+const closeDeleteAlbum = id => document.getElementById('delete_album_' + id).classList.remove('is-active')
+
+export default ({ albumId }) => (
+  <div class="modal" id={'delete_album_' + albumId}>
+    <div class="modal-background" onClick={e => closeDeleteAlbum(albumId)}></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Are you sure you want to delete this Album?</p>
+        <button class="delete" aria-label="close" onClick={e => closeDeleteAlbum(albumId)}></button>
+      </header>
+      <footer class="modal-card-foot">
+        <button class="button is-danger" onClick={e => closeDeleteAlbum(albumId, 'deleteAlbum')}>Delete</button>
+        <button class="button" onClick={e => closeDeleteAlbum(albumId)}>Cancel</button>
+      </footer>
     </div>
   </div>
 )

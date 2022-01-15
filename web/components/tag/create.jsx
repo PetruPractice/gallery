@@ -1,14 +1,30 @@
-module.exports = ({ emit }) => <div class='row card modal modal-fixed-footer s12' id='create_tag'>
-  <form onsubmit={e => emit('createTag', e)}>
-    <div class='modal-content'>
-      <input placeholder='tag name' name='tagName' />
-      <input type='color' name='tagColor' />
-      <br />
-      <textarea name='tagDesc' cols='30' rows='10' />
+import { useDispatch } from 'react-redux'
+
+const closeCreateTag = () => document.getElementById('create_tag').classList.remove('is-active')
+export default () => {
+  const dispatch = useDispatch()
+  return (
+    <div class="modal" id='create_tag'>
+      <div class="modal-background" onClick={closeCreateTag}></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Create A Tag</p>
+            <button class="delete" aria-label="close" onClick={closeCreateTag}></button>
+          </header>
+          <form onSubmit={e => dispatch({type:'createTag', e})}>
+            <section class="modal-card-body">
+                <input class="input" placeholder='tag name' name='tagName' />
+                <input class="input" type='color' name='tagColor' />
+                <br />
+                <textarea class="textarea" name='tagDesc' cols='30' rows='10' />
+            </section>
+            <footer class="modal-card-foot">
+              <button class="button is-success" type="submit">Create Tag</button>
+              <button class="button" onClick={closeCreateTag}>Cancel</button>
+            </footer>
+          </form>
+        </div>
     </div>
-    <div class='modal-footer'>
-      <button class='modal-close waves-effect waves-green btn-flat'>Cancel</button>
-      <button href='#!' class='modal-close waves-effect waves-green btn-flat green' type='submit'>Create Tag</button>
-    </div>
-  </form>
-                               </div>
+  )
+}
+

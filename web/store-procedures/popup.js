@@ -9,10 +9,7 @@ module.exports = (state, emitter) => {
         })
     })
 
-    setTimeout(() => {
-        const modals = document.querySelectorAll('.modal-trigger')
-        console.log(modals)
-    }, 1000)
+
 
     //
     // M.Modal.init(view.querySelectorAll('#settings'), {})

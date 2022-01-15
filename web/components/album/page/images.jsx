@@ -1,7 +1,6 @@
 const EditButton = require('../../image/edit')
-const { baseURL } = require('../../../store-procedures/utils.js')
 const AlbumImage = ({ img }) => <div class='col s4 modal-trigger' data-target={'image_' + img._id}>
-  <img class='responsive-img card materialbox' src={baseURL + '/api/images/' + img.filename} />
+  <img class='responsive-img card materialbox' src={'http://localhost:8080/api/images/' + img.filename} />
                                 </div>
 
 const imageFrom = (color, id) => 'data:image/svg+xml;base64,' + window.btoa('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"><rect width="100" height="100" fill="#' + color + '"/></svg>') + '#' + id
