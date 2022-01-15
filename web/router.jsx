@@ -21,6 +21,7 @@ import page from './store-procedures/structure.jsx'
 import Album from './views/album.jsx'
 import Tags from './views/tags.jsx'
 import Upload from './views/upload.jsx'
+import Login from './views/login.jsx'
 
 window.React = React
 const store = createStore(combineReducers({ page, params }))
@@ -31,7 +32,8 @@ const interceptor = ({ current }) => current?.props && store.dispatch({ type: 'u
 render(
   <Provider store={store}>
     <Router onChange={interceptor}>
-      <Album path='/' default />
+      <Login path='/' default />
+      <Album path='/albums' />
       <Tags path='/tags' />
       <Upload path='/upload' />
     </Router>

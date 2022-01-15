@@ -22,12 +22,11 @@ npm start
 ```
 
 # Bugs
-- [ ] Moving albums stop being interactive & structure does not update
-- [ ] 
+
 # Features
-- [x] image page
-- [x] image tags
-    - [x] tag delete
+- [ ] image page
+- [ ] image tags
+    - [ ] tag delete
 - [ ] image actions
     - [ ] move
     - [ ] delete
@@ -35,7 +34,7 @@ npm start
 - [ ] connect tags for entire albums
     - [ ] make its own table for it
 - [ ] search for images in albums and folders 
-- [ ] nice design of the whole app
+- [x] nice design of the whole app
 - [ ] sort tags, sort by date, by location, by metadata
 
 ------ 
