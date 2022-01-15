@@ -1,29 +1,27 @@
-const EditButton = require('../../image/edit')
-const AlbumImage = ({ img }) => <div class='col s4 modal-trigger' data-target={'image_' + img._id}>
-  <img class='responsive-img card materialbox' src={'http://localhost:8080/api/images/' + img.filename} />
-                                </div>
+import {Popup } from '../../popup.jsx'
+import EditButton from '../../image/edit.jsx'
+
+const AlbumImage = ({ img }) => (
+  <div class='col s4 modal-trigger' data-target={'image_' + img._id}>
+    <img class='responsive-img card materialbox' src={'http://localhost:8080/api/images/' + img.filename} />
+  </div>
+)
 
 const imageFrom = (color, id) => 'data:image/svg+xml;base64,' + window.btoa('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"><rect width="100" height="100" fill="#' + color + '"/></svg>') + '#' + id
 
-const ImagePage = ({ state, emit, img, albumId }) => {
+const ImagePage = ({ img, albumId }) => {
     const tags = <div class='chips chips-autocomplete' />
+    const id = 'image_' = img._id
     const imgPage = (
-      <div class='modal image_page' id={'image_' + img._id} style='width:98vw; height:98vh'>
+      <Popup id={id} title={img.title} header={<EditButton imageId={img._id} albumId={albumId} />} style='width:98vw; height:98vh'>
         <img src={baseURL + '/api/images/' + img.filename} style='width:100%; height: auto' />
         {/* {TagsList(state, emit, img._id)} */}
         {/* <h3>Add Image Tag</h3> */}
         {/* {tagOptions} */}
         {/* <button class="add-tag" onclick={e => emit('addTag', img._id, tagOptions.value)}>+</button> */}
         {tags}
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <EditButton state={state} emit={emit} imageId={img._id} albumId={albumId} />
-      </div>
-)
+      </Popup>
+    )
     // setTimeout(() => {
     //     M.Chips.init(tags, {
     //         data: JSON.parse(img.tags).map(tag => ({tag: tag.name, image: imageFrom(tag.color, tag._id)})),
@@ -49,4 +47,4 @@ const ImagePage = ({ state, emit, img, albumId }) => {
     // }, 0)
     return imgPage
 }
-module.exports = { AlbumImage, ImagePage }
+export default { AlbumImage, ImagePage }

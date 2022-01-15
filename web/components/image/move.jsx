@@ -1,19 +1,28 @@
-module.exports = ({ albumId, imageId, emit, state }) => (
-  <div class='row card modal s12 move_image' id={'move_image_' + imageId}>
-    <div class='modal-content'>
-      <table>
-        <tr><th>Image Name</th><th>Pick</th></tr>
-        {state.page.albums.filter(album => album._id !== albumId).map(album => (
-          <tr>
-            <td>{album.title}</td>
-            <td><button class='modal-close waves-effect waves-green btn' onclick={e => emit('chooseAlbumForImage', imageId, album._id)}>Choose</button></td>
-          </tr>
-		))}
-      </table>
+import { useDispatch } from 'react-redux'
+import {Popup } from '../popup.jsx'
 
-    </div>
-    <div class='modal-footer'>
-      <button class='modal-close waves-effect waves-green btn-flat'>Cancel</button>
-    </div>
-  </div>
-)
+export default ({ albumId, imageId }) => {
+  const id = 'move_image_' + imageId
+  return (
+    <Popup id={id} title='Move Image'>
+      <section class="modal-card-body">
+        <div class='rows'>
+          <div class='row columns'>
+            <div class='column is-6'>Image Name</div>
+            <div class='column is-6'>Pick album to move to</div>
+          </div>
+          {albums.filter(album => album._id !== albumId).map(album => (
+                <div class='row columns'>
+                  <div class='column is-6'>{album.title}</div>
+                  <div class='column is-6'>
+                    <button class='button is-info' onClick={e => {
+                      const dispatch = useDispatch()
+                      dispatch({type: 'chooseAlbumForImage', imageId, albumId: album._id, e})
+                    }}>Choose</button></div>
+                </div>
+          ))}
+          </div>
+      </section>
+    </Popup>
+  )
+}

@@ -25,20 +25,72 @@ const populate = async store => {
     store.dispatch({ type: 'updateData', data: { albums, tags } })
 }
 
-const setup = store => {
+
+const droppedImages = (e, uploadPopup) => {
+    const form = uploadPopup.querySelector('form')
+    const strong = form.querySelector('strong')
+    const uploader = form.querySelector('input[type="file"]')
+    const span = form.querySelector('span')
+    uploadPopup.classList.remove('uploadImagesOver')
+    strong.classList.remove('uploadStrongHover')
+    const files = e.dataTransfer.files
+    strong.innerText = files.length
+    span.innerHTML = ' files selected for upload<br>'
+    for (let i = 0; i < files.length; i++) {
+        const img = document.createElement('img')
+        img.width = img.height = 80
+        const reader = new FileReader()
+        reader.readAsDataURL(files[i])
+        reader.onload = e => img.src = e.target.result
+        span.appendChild(img)
+    }
+    const select = form.querySelector('select')
+    select.options[0].selected = true
+    uploader.style.width = '0px'
+}
+
+const uploadPage = e => {
+    e.preventDefault()
+    const form = e.target
+    const strong = form.querySelector('strong')
+    const uploader = form.querySelector('input[type="file"]')
+    const span = form.querySelector('span')
+    const button = form.querySelector('button')
+    button.setAttribute('disabled', 'disabled')
+    button.innerText = 'Uploading ...'
+    getJSON('/api/upload', {
+        body: new FormData(form),
+        method: 'post'
+    }).then(res => {
+        button.innerText = 'Upload'
+        button.removeAttribute('disabled')
+        strong.innerText = 'Choose a file'
+        span.innerHTML = ' or drag it here.'
+        uploader.style.width = '100%'
+        // state.page.upload.files = []
+        // state.page.upload.isUploading = false
+    })
+
+    return false
+}
+
+const setup = async (store, state) => {
     const baseURL = 'http://localhost:8080'
     GET.setup(baseURL, { header: {} })
 
+    await populate(store)
 
-    setTimeout(() => {
-        for (const popup of document.querySelectorAll('.modal-trigger')) {
-            const id = popup.getAttribute('data-target')
-            const element = document.getElementById(id)
-            popup.onclick = () => element?.classList.add('is-active')
-        }
-    }, 1000)
+    for (const popup of document.querySelectorAll('.modal-trigger')) {
+        const id = popup.getAttribute('data-target')
+        const element = document.getElementById(id)
+        popup.onclick = () => element?.classList.add('is-active')
+    }
+    document.body.addEventListener('dragenter', () => {
+        const uploadPopup = document.getElementById('uploadImages')
+        uploadPopup.classList.add('is-active')
+        uploadPopup.addEventListener('drop', e => droppedImages(e, uploadPopup))
+    })
 
-    populate(store)
 }
 
 const createTag = async e => {
@@ -53,6 +105,53 @@ const createTag = async e => {
     console.log('tag create res', res)
 }
 
+
+const findAndDeleteAlbum = (albums, albumId) => {
+    for (let i = 0; i < albums.length; i++) {
+        const album = albums[i]
+        if (album._id == albumId) {
+            albums.splice(i, 1)
+            return album
+        }
+        const found = findAndDeleteAlbum(album.children, albumId)
+        if (found) return found
+    }
+}
+
+const addChildToParent = (albums, parentAlbumId, childAlbum) => {
+    albums.forEach(album => {
+        if (parentAlbumId == album._id) {
+            album.children.push(childAlbum)
+            return
+        }
+        addChildToParent(album.children, parentAlbumId, childAlbum)
+    })
+}
+
+const getAlbumById = albumId => state.page.albums.find(album => album._id === albumId)
+
+const chooseAlbum = async (albumId, parentAlbumId, albums, dispatch, e) => {
+    const res = await GET.json('/api/folder/new/' + parentAlbumId + '/' + albumId)
+    // abstract this into a function to explain what it does
+    for (const album of albums) {
+        album.children = album.children.filter(child => child._id != albumId)
+    }
+    const isRoot = parentAlbumId === -1
+
+    const albumPage = isRoot ? document.querySelector('.albums_list') : document.getElementById('album_' + parentAlbumId)
+    const albumButton = document.querySelector('[data-target="album_' + albumId + '"]')
+    // add new album Button
+    albumPage.insertBefore(albumButton, albumPage.firstElementChild.nextSibling)
+
+    // toggle root
+    const chooseRoot = document.querySelector('#move_album_' + albumId).querySelectorAll('.row')[1]
+    if (!isRoot) {
+        getAlbumById(parentAlbumId).children.push(getAlbumById(albumId))
+        chooseRoot.style.removeProperty('display')
+    } else {
+        chooseRoot.style.display = 'none'
+    }
+}
 
 const newAlbum = async (e, dispatch, albums) => {
     e.preventDefault()
@@ -86,8 +185,41 @@ const newAlbum = async (e, dispatch, albums) => {
     return false
 }
 
-export default (state = initialState, { type, store, data, e, dispatch }) => {
-    type === 'getData' && setup(store)
+const applyTagToWholeAlbum = async (albumId, tagId, albums, tags, dispatch, e) => {
+    //TODO
+}
+
+const deleteAlbum = async (albumId, albums, dispatch, e) => {
+    await GET.json('/api/album/remove/' + albumId)
+    albums = albums.filter(album => album._id !== albumId)
+    document.querySelector('[data-target="album_' + albumId + '"]').remove()
+    document.getElementById('album_' + albumId).remove()
+    dispatch({type: 'updateData', data: {albums}})
+}
+
+const chooseAlbumForImage = async (imageId, albumId) => {
+    await GET.json('/api/image/move/' + imageId + '/' + albumId)
+    document.getElementById('album_' + albumId).appendChild(document.querySelector('[data-target="image_' + imageId + '"]'))
+}
+
+const deleteImage = async imageId => {
+    await GET.json('/api/image/delete/' + imageId)
+    document.querySelector('[data-target="image_' + imageId + '"]').remove()
+    document.getElementById('image_' + imageId).remove()
+}
+
+
+const tagAdd = async (tagId, imageId) => await GET.json(baseURL + '/api/tag/link/' + tagId + '/' + imageId)
+
+const tagDelete = async (tagId, imageId, albums, dispatch) => {
+    await GET.json(baseURL + '/api/tag/delete/' + tagId + '/' + imageId)
+    const imagesMap = album => album.images.map(img => ({...img, tags: Array.isArray(img.tags) && img._id === imageId ? img.tags : img.tags.filter(tag => tag._id !== tagId)}))
+    dispatch({type: 'updateData', data: {albums: albums.map(album => ({...album, images: imagesMap(album)})) } })
+}
+
+
+export default (state = initialState, { type, store, data, e, dispatch, albumId, parentAlbumId, tagId }) => {
+    type === 'getData' && setup(store, state)
     type === 'updateData' && (state = Object.merge(state, data))
 
     // Tags
@@ -95,6 +227,9 @@ export default (state = initialState, { type, store, data, e, dispatch }) => {
 
     // Albums
     type === 'newAlbum' && newAlbum(e, dispatch, state.albums)
-    
+    type === 'chooseAlbum' && chooseAlbum(albumId, parentAlbumId, state.albums, dispatch, e)
+    type === 'applyTagToWholeAlbum' && applyTagToWholeAlbum(albumId, tagId, state.albums, state.tags, dispatch, e)
+    type === 'deleteAlbum' && deleteAlbum(albumId, state.albums, dispatch, e)
+    type === 'uploadPage' && uploadPage(e)
     return { ...state }
 }

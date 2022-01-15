@@ -1,25 +1,21 @@
 import css from 'classnames'
 import { connect } from 'react-redux'
 
+import {Popup, closePopup } from '../../popup.jsx'
+
 import ListAlbums from '../list.jsx'
 import EditButton from './edit/index.jsx'
-
-
-const closeAlbumPage = id => document.getElementById('album_' + id).classList.remove('is-active')
 
 const AlbumImage = ({ img }) => (
   <div class='column modal-trigger' data-target={'image_' + img._id}>
     <img style={css({width: '100%', height: '100%'})} src={'http://localhost:8080/api/images/' + img.filename} />
   </div>
 )
-const AlbumPage = ({ album }) => (
-  <div class="modal" id={'album_' + album._id}>
-    <div class="modal-background" onClick={e => closeAlbumPage(album._id)}></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title">{album.title}</p>
-        <EditButton albumId={album._id} />
-      </header>
+
+const AlbumPage = ({ album }) => {
+  const id = 'album_' + album._id
+  return (
+    <Popup id={id} title={album.title} header={<EditButton albumId={album._id} />} noDelete>
       <section class="modal-card-body">
           <ListAlbums albums={album.children} />
           <div class='columns is-multiline'>
@@ -28,12 +24,12 @@ const AlbumPage = ({ album }) => (
           {/** tags here ... maybe in the future */}
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success" onClick={e => closeAlbumPage(album._id)}>Save changes</button>
-        <button class="button" onClick={e => closeAlbumPage(album._id)}>Cancel</button>
+        <button class="button is-success" onClick={e => closePopup(id, 'TODO')}>Save changes</button>
+        <button class="button" onClick={e => closePopup(id)}>Cancel</button>
       </footer>
-    </div>
-  </div>
-)
+    </Popup>
+  )
+}
 
 const ListAlbumPages = ({ page }) => page.albums.map(album => <AlbumPage album={album} />)
 
