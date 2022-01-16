@@ -42,9 +42,9 @@ npm start
 - [ ] share button to get a protected link 
 - [ ] thumbnailing
 - [ ] check for network(your online , offline)
-- [ ] adapt to Cordova for mobile 
+- [ ] adapt basic design and functionality for mobile 
 - [ ] set peer to peer connection, (udp) for comunication between galleries on different devices
 - [ ] make web and mobile app distributed
-- [ ] microsoft image analisys api???
+
 
 ![gallery system diagram](/gallery.png)
